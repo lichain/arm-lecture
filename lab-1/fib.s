@@ -16,7 +16,7 @@ fibonacci:
 	@ R4 = R0 - 0 (update flags)
 	@ if(R0 <= 0) goto .L3 (which returns 0)
 	subs R4, R0, #0
-	cmp R4, #1
+	cmp R0, #0
 	ble .L3
 
 	@ Compare R4 wtih 1
@@ -45,8 +45,10 @@ fibonacci:
 .L3:
 	mov r0, #0			@ R0 = 0
 	pop {r3, r4, r5, pc}		@ EPILOG
+
 .L4:
 	mov r0, #1			@ R0 = 1
 	pop {r3, r4, r5, pc}		@ EPILOG
+
 	.size fibonacci, .-fibonacci
 	.end
