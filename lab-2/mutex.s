@@ -9,7 +9,15 @@
 	.type lock_mutex, function
 lock_mutex:
         @ INSERT CODE BELOW
+				ldr r1, =locked
+.L1:
+				ldrex r2, [r0]	@test the lock is locked or not.
+				cmp r2, #locked
+				beq .L1					@if still locked, then jump L1.
 
+				strex r2, r1, [r0]
+				cmp r2, #unlocked
+				bne .L1
         @ END CODE INSERT
 	bx lr
 
@@ -18,8 +26,9 @@ lock_mutex:
 	.global unlock_mutex
 	.type unlock_mutex, function
 unlock_mutex:
-	@ INSERT CODE BELOW
-        
+				@ INSERT CODE BELOW
+				ldr r1, =unlocked
+				str r1, [r0]
         @ END CODE INSERT
 	bx lr
 	.size unlock_mutex, .-unlock_mutex
